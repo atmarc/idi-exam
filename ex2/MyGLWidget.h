@@ -65,10 +65,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // model
     Model patr, cow;
     // paràmetres calculats a partir de la capsa contenidora del model
-    glm::vec3 centrePatr, centreCow, centreCowBase;
+    glm::vec3 centrePatr, centrePatrBase, centreCow;
     float escalaPatr, escalaCow;
     // radi de l'escena
-    float radiEsc;
+    float radiEsc, angleR;
 
     typedef  enum {NONE, ROTATE} InteractiveAction;
     InteractiveAction DoingInteractive;

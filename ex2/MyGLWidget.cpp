@@ -40,7 +40,7 @@ void MyGLWidget::iniCamera ()
 {
   angleY = 0.0;
   perspectiva = true;
-
+  angleR = 0.0;
   projectTransform ();
   viewTransform ();
 }
@@ -98,9 +98,11 @@ void MyGLWidget::resizeGL (int w, int h)
 void MyGLWidget::modelTransformPatricio ()
 {
   glm::mat4 TG(1.f);  // Matriu de transformació
-  TG = glm::translate(TG, glm::vec3(0,0.5, 0));
+  TG = glm::translate(TG, glm::vec3(1, -0.20, 0));
   TG = glm::scale(TG, glm::vec3(escalaPatr, escalaPatr, escalaPatr));
-  TG = glm::translate(TG, -centrePatr);
+  TG = glm::rotate(TG, angleR, glm::vec3(0,1,0));
+  TG = glm::rotate(TG, float(M_PI)/2, glm::vec3(0,1,0));
+  TG = glm::translate(TG, -centrePatrBase);
   
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TG[0][0]);
 }
@@ -112,6 +114,7 @@ void MyGLWidget::modelTransformCow ()
   TG = glm::translate(TG, glm::vec3(1, -0.5, 0));
   TG = glm::translate(TG, -centreCow);
   TG = glm::scale(TG, glm::vec3(escalaCow, escalaCow, escalaCow));
+  TG = glm::rotate(TG, angleR, glm::vec3(0,1,0));
   TG = glm::rotate(TG, -float(M_PI)/2, glm::vec3(1,0,0));
   
   
@@ -153,6 +156,10 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
       perspectiva = !perspectiva;
       projectTransform ();
       break;
+    }
+    case Qt::Key_R: { // canvia òptica entre perspectiva i axonomètrica
+        angleR += float(M_PI)/6;
+        break;
     }
     default: event->ignore(); break;
   }
@@ -217,6 +224,7 @@ void MyGLWidget::calculaCapsaModelPatr ()
   }
   escalaPatr = 0.25/(maxy-miny);
   centrePatr[0] = (minx+maxx)/2.0; centrePatr[1] = (miny+maxy)/2.0; centrePatr[2] = (minz+maxz)/2.0;
+  centrePatrBase[0] = (minx+maxx)/2.0; centrePatrBase[1] = miny; centrePatrBase[2] = (minz+maxz)/2.0;
 }
 
 void MyGLWidget::calculaCapsaModelCow ()
@@ -243,7 +251,6 @@ void MyGLWidget::calculaCapsaModelCow ()
   }
   escalaCow = 0.5/(maxy-miny);
   centreCow[0] = (minx+maxx)/2.0; centreCow[1] = (miny+maxy)/2.0; centreCow[2] = (minz+maxz)/2.0;
-  centreCowBase[0] = (minx+maxx)/2.0; centreCowBase[1] = miny; centreCowBase[2] = (minz+maxz)/2.0;
 }
 
 void MyGLWidget::createBuffersPatricio ()
