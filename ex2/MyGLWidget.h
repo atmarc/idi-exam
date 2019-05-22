@@ -48,6 +48,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void calculaCapsaModelCow ();
     void createBuffersCow();
     void modelTransformCow();
+    void modelTransformCamara();
 
     // VAO names
     GLuint VAO_Patr;
@@ -58,18 +59,23 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // Viewport
     GLint ample, alt;
     // uniform locations
-    GLuint transLoc, projLoc, viewLoc;
+    GLuint transLoc, projLoc, viewLoc, isCowLoc, XLoc;
     // attribute locations
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
-
+    
     // model
     Model patr, cow;
     // paràmetres calculats a partir de la capsa contenidora del model
-    glm::vec3 centrePatr, centrePatrBase, centreCow;
+    glm::vec3 centrePatr, centreCowBase, centreCow;
     float escalaPatr, escalaCow;
     // radi de l'escena
     float radiEsc, angleR;
-
+    //camera
+    glm::vec3 OBS, VRP, UP;
+    float FOV, FOVini, zn, zf, ra;
+    
+    int isCow, X;
+    
     typedef  enum {NONE, ROTATE} InteractiveAction;
     InteractiveAction DoingInteractive;
     int xClick, yClick;
